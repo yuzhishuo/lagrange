@@ -1,6 +1,11 @@
 [api]
-addr = "node1:8080"
+addr = "localhost:8080"
 
 [store]
-memory = true
+memory = false
 dataPath = "/tmp"
+
+RaftId   = 1
+RaftCluster = "http://127.0.0.1:9021"
+RaftJoin   = false
+RaftPort = 9901

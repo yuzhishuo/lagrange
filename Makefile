@@ -11,7 +11,7 @@ dist_dir: ; $(info ======== prepare distribute dir:)
 
 .PHONY: server
 server: dist_dir; $(info ======== compiled server)
-	env GO111MODULE=on GOOS=$(GOOS) go build -mod=vendor -a -installsuffix cgo -o $(DIST_DIR)server $(LD_FLAGS) $(ROOT_DIR)cmd/server/*.go
+	env  CGO_ENABLED=0 GOARCH=amd64 GO111MODULE=on GOOS=$(GOOS) go build -mod=vendor -a -installsuffix cgo -o $(DIST_DIR)server $(LD_FLAGS) $(ROOT_DIR)cmd/server/*.go
 
 .PHONY: checker
 checker: dist_dir; $(info ======== compiled checker)

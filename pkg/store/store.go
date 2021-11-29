@@ -2,7 +2,7 @@ package store
 
 import (
 	"fmt"
-	"unsafe"
+	"strings"
 
 	"github.com/matrixorigin/talent-challenge/matrixbase/distributed/pkg/cfg"
 	"go.etcd.io/etcd/raft/v3/raftpb"
@@ -16,6 +16,8 @@ type Store interface {
 	Get(key []byte) ([]byte, error)
 	// Delete remove the key from store
 	Delete(key []byte) error
+
+	getSnapshot() ([]byte, error)
 }
 
 // NewStore create the raft store
@@ -26,18 +28,18 @@ func NewStore(cfg cfg.StoreCfg) (Store, error) {
 	}
 
 	proposeC := make(chan string)
-	defer close(proposeC)
+	// defer close(proposeC)
 	confChangeC := make(chan raftpb.ConfChange)
-	defer close(confChangeC)
+	// defer close(confChangeC)
 	var kvs Store
 	fmt.Println(cfg.DataPath)
-	getSnapshot := func() ([]byte, error) { return (*persistentStore)(unsafe.Pointer(&kvs)).getSnapshot() }
-	commitC, errorC, snapshotterReady := newRaftNode(1, []string{"http://127.0.0.1:12379"}, false, getSnapshot, proposeC, confChangeC)
+	getSnapshot := func() ([]byte, error) { return kvs.getSnapshot() }
+	commitC, errorC, snapshotterReady := newRaftNode(cfg.RaftId, strings.Split(cfg.RaftCluster, ","), cfg.RaftJoin, getSnapshot, proposeC, confChangeC)
 
-	var err error
-	if kvs, err = newPersistentStore(cfg, <-snapshotterReady, proposeC, commitC, errorC); err != nil {
-		return nil, err
-	}
-
+	kvs = newPersistentStore(cfg, <-snapshotterReady, proposeC, commitC, errorC)
+	// kvs = newKVStore(<-snapshotterReady, proposeC, commitC, errorC)
+	go func() {
+		serveHttpKVAPI(kvs, cfg.RaftPort, confChangeC, errorC)
+	}()
 	return kvs, nil
 }

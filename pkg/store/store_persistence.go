@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
-	"fmt"
 	"log"
 	"sync"
 
@@ -22,7 +21,7 @@ type kv struct {
 }
 
 type persistentStore struct {
-	sync.RWMutex
+	mu sync.RWMutex
 
 	proposeC    chan<- string // channel for proposing updates
 	db          *pebble.DB
@@ -34,11 +33,11 @@ func newPersistentStore(
 	snapshotter *snap.Snapshotter,
 	proposeC chan<- string,
 	commitC <-chan *commit,
-	errorC <-chan error) (Store, error) {
+	errorC <-chan error) Store {
 
 	db, err := pebble.Open(cfg.DataPath, &pebble.Options{})
 	if err != nil {
-		return nil, err
+		return nil
 	}
 	s := &persistentStore{
 		db:          db,
@@ -59,30 +58,24 @@ func newPersistentStore(
 	// read commits from raft into kvStore map until error
 	go s.readCommits(commitC, errorC)
 
-	return s, nil
+	return s
 }
 
 func (s *persistentStore) Set(key []byte, value []byte) error {
-	s.Lock()
-	defer s.Unlock()
-
-	// if err := s.db.Set(key, value, pebble.Sync); err != nil {
-	// 	return (err)
-	// }
-	s.Propose("set", string(key), string(value))
-	return nil
+	log.Printf("%s %s %s\n", "set", key, value)
+	return s.Propose("set", string(key), string(value))
 }
 
 func (s *persistentStore) Get(key []byte) ([]byte, error) {
-	s.RLock()
-	defer s.RUnlock()
+	s.mu.RLock()
+	defer s.mu.RUnlock()
 
 	value, closer, err := s.db.Get(key)
 	if err != nil {
 		return nil, err
 	}
 
-	fmt.Printf("%s %s\n", key, value)
+	log.Printf("%s %s %s\n", "get", key, value)
 	if err := closer.Close(); err != nil {
 		log.Fatal(err)
 	}
@@ -91,19 +84,26 @@ func (s *persistentStore) Get(key []byte) ([]byte, error) {
 }
 
 func (s *persistentStore) Delete(key []byte) error {
-	s.Lock()
-	defer s.Unlock()
-
-	// if err := s.db.Delete(key, pebble.Sync); err != nil {
-	// 	return err
-	// }
-	s.Propose("del", string(key), string(""))
-	return nil
+	log.Printf("deleting %s\n", key)
+	return s.Propose("del", string(key), string(""))
 }
 
 func (s *persistentStore) getSnapshot() ([]byte, error) {
+	// s.mu.RLock()
+	// defer s.mu.RUnlock()
+	snapshot := s.db.NewSnapshot()
+	defer snapshot.Close()
+	options := make(map[string]string)
+	// Count the keys at this snapshot.
+	iter := snapshot.NewIter(nil)
+	count := 0
+	for iter.First(); iter.Valid(); iter.Next() {
+		count++
+		log.Printf("getSnapshot  No. %d : %s %v", count, iter.Key(), iter.Value())
+		options[string(iter.Key())] = string(iter.Value())
+	}
 
-	return nil, nil
+	return json.Marshal(options)
 }
 
 func (s *persistentStore) loadSnapshot() (*raftpb.Snapshot, error) {
@@ -117,14 +117,15 @@ func (s *persistentStore) loadSnapshot() (*raftpb.Snapshot, error) {
 	return snapshot, nil
 }
 
-func (s *persistentStore) Propose(ops string, k string, v string) {
+func (s *persistentStore) Propose(ops string, k string, v string) error {
 	var buf bytes.Buffer
 	options := make(map[string]kv)
 	options[ops] = kv{k, v}
 	if err := gob.NewEncoder(&buf).Encode(options); err != nil {
-		log.Fatal(err)
+		return err
 	}
 	s.proposeC <- buf.String()
+	return nil
 }
 
 func (s *persistentStore) readCommits(commitC <-chan *commit, errorC <-chan error) {
@@ -153,13 +154,14 @@ func (s *persistentStore) readCommits(commitC <-chan *commit, errorC <-chan erro
 
 			for ops, kv := range options {
 				if ops == "set" {
+					log.Printf("readCommits setting %s %s\n", kv.Key, kv.Val)
 					if err := s.db.Set([]byte(kv.Key), []byte(kv.Val), pebble.Sync); err != nil {
-						// return (err)
+						log.Panic(err)
 					}
 				}
 				if ops == "del" {
 					if err := s.db.Delete([]byte(kv.Key), pebble.Sync); err != nil {
-						// return err
+						log.Panic(err)
 					}
 				}
 			}
@@ -176,8 +178,8 @@ func (s *persistentStore) recoverFromSnapshot(snapshot []byte) error {
 	if err := json.Unmarshal(snapshot, &store); err != nil {
 		return err
 	}
-	s.Lock()
-	defer s.Unlock()
+	s.mu.Lock()
+	defer s.mu.Unlock()
 
 	for k, v := range store {
 		if err := s.db.Set([]byte(k), []byte(v), pebble.Sync); err != nil {

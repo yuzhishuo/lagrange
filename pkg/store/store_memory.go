@@ -43,3 +43,8 @@ func (s *memoryStore) Delete(key []byte) error {
 	delete(s.db, string(key))
 	return nil
 }
+
+func (s *memoryStore) getSnapshot() ([]byte, error) {
+
+	return nil, nil
+}

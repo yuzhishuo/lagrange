@@ -418,8 +418,11 @@ func (rc *raftNode) serveChannels() {
 		confChangeCount := uint64(0)
 
 		for rc.proposeC != nil && rc.confChangeC != nil {
+			log.Println("1")
 			select {
+
 			case prop, ok := <-rc.proposeC:
+				log.Println("2")
 				if !ok {
 					rc.proposeC = nil
 				} else {
@@ -428,6 +431,7 @@ func (rc *raftNode) serveChannels() {
 				}
 
 			case cc, ok := <-rc.confChangeC:
+				log.Println("3")
 				if !ok {
 					rc.confChangeC = nil
 				} else {

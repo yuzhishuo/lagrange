@@ -21,6 +21,12 @@ type APICfg struct {
 type StoreCfg struct {
 	Memory   bool   `toml:"memory"`
 	DataPath string `toml:"dataPath"`
+
+	RaftAddr    string `toml:"raftAddr"`
+	RaftId      int    `toml:"raftId"`
+	RaftCluster string `toml:"raftCluster"`
+	RaftPort    int    `toml:"raftPort"`
+	RaftJoin    bool   `toml:"raftJoin"`
 }
 
 // MustParseCfg parse cfg, exit if has any error
@@ -30,6 +36,5 @@ func MustParseCfg(file string) Cfg {
 	if err != nil {
 		log.Fatalf("parse cfg %s failed with %+v", file, err)
 	}
-
 	return c
 }

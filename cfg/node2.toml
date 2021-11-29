@@ -2,5 +2,9 @@
 addr = "node2:8080"
 
 [store]
-memory = true
+memory = false
 dataPath = "/tmp"
+
+RaftId   = 2
+RaftCluster = "http://127.0.0.1:12379,http://127.0.0.1:22379,http://127.0.0.1:32379"
+RaftJoin   = true
