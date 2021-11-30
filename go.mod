@@ -4,21 +4,21 @@ go 1.17
 
 replace (
 	go.etcd.io/etcd/api/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/api
-	go.etcd.io/etcd/client/pkg/v3  => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/client/pkg
-	go.etcd.io/etcd/client/v2  => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/client/v2
-	go.etcd.io/etcd/client/v3  => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/client/v3
-	go.etcd.io/etcd/etcdctl/v3   => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/etcdctl
-	go.etcd.io/etcd/etcdutl/v3   => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/etcdutl
-	go.etcd.io/etcd/pkg/v3   => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/pkg
-	go.etcd.io/etcd/raft/v3   => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/raft
-	go.etcd.io/etcd/server/v3   => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/server
-	go.etcd.io/etcd/tests/v3   => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/tests
+	go.etcd.io/etcd/client/pkg/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/client/pkg
+	go.etcd.io/etcd/client/v2 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/client/v2
+	go.etcd.io/etcd/client/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/client/v3
+	go.etcd.io/etcd/etcdctl/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/etcdctl
+	go.etcd.io/etcd/etcdutl/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/etcdutl
+	go.etcd.io/etcd/pkg/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/pkg
+	go.etcd.io/etcd/raft/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/raft
+	go.etcd.io/etcd/server/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/server
+	go.etcd.io/etcd/tests/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/tests
 )
 
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/cockroachdb/pebble v0.0.0-20211125005712-9791c0f4c052
-	github.com/gin-gonic/gin v1.6.3
+	github.com/gin-gonic/gin v1.7.0
 	github.com/stretchr/testify v1.7.0
 	github.com/valyala/fasthttp v1.19.0
 	go.etcd.io/etcd/client/pkg/v3 v3.5.1
@@ -42,7 +42,7 @@ require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.13.0 // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect
-	github.com/go-playground/validator/v10 v10.2.0 // indirect
+	github.com/go-playground/validator/v10 v10.4.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.3 // indirect
@@ -68,6 +68,7 @@ require (
 	go.etcd.io/etcd/pkg/v3 v3.5.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.7.0 // indirect
+	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
 	golang.org/x/exp v0.0.0-20200513190911-00229845015e // indirect
 	golang.org/x/net v0.0.0-20211123203042-d83791d6bcd9 // indirect
 	golang.org/x/sys v0.0.0-20211123173158-ef496fb156ab // indirect
