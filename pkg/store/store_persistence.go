@@ -89,8 +89,6 @@ func (s *persistentStore) Delete(key []byte) error {
 }
 
 func (s *persistentStore) getSnapshot() ([]byte, error) {
-	// s.mu.RLock()
-	// defer s.mu.RUnlock()
 	snapshot := s.db.NewSnapshot()
 	defer snapshot.Close()
 	options := make(map[string]string)
@@ -174,6 +172,8 @@ func (s *persistentStore) readCommits(commitC <-chan *commit, errorC <-chan erro
 }
 
 func (s *persistentStore) recoverFromSnapshot(snapshot []byte) error {
+	log.Println("recoverFromSnapshot")
+	
 	var store map[string]string
 	if err := json.Unmarshal(snapshot, &store); err != nil {
 		return err

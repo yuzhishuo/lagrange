@@ -2,6 +2,7 @@ package store
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/matrixorigin/talent-challenge/matrixbase/distributed/pkg/cfg"
@@ -39,7 +40,8 @@ func NewStore(cfg cfg.StoreCfg) (Store, error) {
 	kvs = newPersistentStore(cfg, <-snapshotterReady, proposeC, commitC, errorC)
 	// kvs = newKVStore(<-snapshotterReady, proposeC, commitC, errorC)
 	go func() {
-		serveHttpKVAPI(kvs, cfg.RaftPort, confChangeC, errorC)
+		// raft server
+		log.Fatalln(serveHttpKVAPI(cfg.RaftPort, confChangeC, errorC))
 	}()
 	return kvs, nil
 }

@@ -3,20 +3,35 @@ services:
   node1:
     image: matrixbase/server
     ports:
-      - "8081:8080"
+      - "8071:8080"
+      - "8081:8081"
+      - "9901:9901"
     volumes:
       - ./cfg/node1.toml:/etc/cfg.toml
 
   node2:
     image: matrixbase/server
     ports:
-      - "8082:8080"
+      - "8072:8080"
+      - "8082:8082"
+      - "9902:9902"
     volumes:
       - ./cfg/node2.toml:/etc/cfg.toml
 
-  node3:
-    image: matrixbase/server
-    ports:
-      - "8083:8080"
-    volumes:
-      - ./cfg/node3.toml:/etc/cfg.toml
+  # node3:
+  #   image: matrixbase/server
+  #   ports:
+  #     - "8073:8080"
+  #     - "8083:8083"
+  #     - "9903:9903"
+  #   volumes:
+  #     - ./cfg/node3.toml:/etc/cfg.toml
+
+  # node4:
+  #   image: matrixbase/server
+  #   ports:
+  #     - "8074:8080"
+  #     - "8084:8084"
+  #     - "9904:9904"
+  #   volumes:
+  #     - ./cfg/node4.toml:/etc/cfg.toml

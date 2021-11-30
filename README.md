@@ -1,3 +1,42 @@
+## 使用
+
+`docker-compose up` 启动两个节点
+
+集群信息 为： http://node1:8081,http://node2:8082,
+
+将第三个节点信息交给集群：
+
+```bash
+ curl -L http://127.0.0.1:9901/3 -XPOST -d http://node3:8083
+```
+
+将 docker-compose 中 node3 的配置信息更新到集群：
+在新的bash中执行docker-compose up，可以保证node3的启动和集群是在同一网络环境下
+
+
+test 文件中含有压入数据脚本
+
+```
+ curl -H "Content-Type: application/json" -X POST -d '{  "Key": "'"${rand_key}"'", "Value": "'"${rand_val}"'"  }' "localhost:8072/kv"
+```
+
+注意： 后加入的集群拥有全部的 集群信息
+
+RaftCluster = "http://node1:8081,http://node2:8082,http://node3:8083"
+
+最开始启动几个节点，则RaftCluster中 地址有几个，按照逗号分隔。
+
+以node1为例：
+
+addr： 为对外服务用于对数据的增删改查
+RaftPort： 为raft集群内部通信用
+RaftCluster: 为集群内部通信用
+
+
+
+
+
+
 ## 分布式编程题
 实现一个高可用，多副本，强一致，持久化的KV存储系统。实现语言为`Golang`。
 

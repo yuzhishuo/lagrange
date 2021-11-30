@@ -25,7 +25,7 @@ type StoreCfg struct {
 	RaftAddr    string `toml:"raftAddr"`
 	RaftId      int    `toml:"raftId"`
 	RaftCluster string `toml:"raftCluster"`
-	RaftPort    int    `toml:"raftPort"`
+	RaftPort    string `toml:"raftPort"`
 	RaftJoin    bool   `toml:"raftJoin"`
 }
 

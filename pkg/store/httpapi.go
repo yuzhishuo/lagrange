@@ -25,7 +25,6 @@ import (
 
 // Handler for a http based key-value store backed by raft
 type httpKVAPI struct {
-	store       Store
 	confChangeC chan<- raftpb.ConfChange
 }
 
@@ -33,38 +32,21 @@ func (h *httpKVAPI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	key := r.RequestURI
 	defer r.Body.Close()
 	switch r.Method {
-	case http.MethodPut:
-		v, err := io.ReadAll(r.Body)
-		if err != nil {
-			log.Printf("Failed to read on PUT (%v)\n", err)
-			http.Error(w, "Failed on PUT", http.StatusBadRequest)
-			return
-		}
-
-		h.store.Set([]byte(key), v)
-
-		// Optimistic-- no waiting for ack from raft. Value is not yet
-		// committed so a subsequent GET on the key may return old value
-		w.WriteHeader(http.StatusNoContent)
-	case http.MethodGet:
-		ff, _ := h.store.Get([]byte(key))
-		http.Error(w, string(ff), http.StatusNotFound)
-
 	case http.MethodPost:
 		url, err := io.ReadAll(r.Body)
 		if err != nil {
-			log.Printf("Failed to read on POST (%v)\n", err)
+			log.Printf("httpKVAPI： Failed to read on POST (%v)\n", err)
 			http.Error(w, "Failed on POST", http.StatusBadRequest)
 			return
 		}
 
 		nodeId, err := strconv.ParseUint(key[1:], 0, 64)
 		if err != nil {
-			log.Printf("Failed to convert ID for conf change (%v)\n", err)
+			log.Printf("httpKVAPI： Failed to convert ID for conf change (%v)\n", err)
 			http.Error(w, "Failed on POST", http.StatusBadRequest)
 			return
 		}
-
+		log.Printf("httpKVAPI： New node joining id: %d \n url : %s\n", nodeId, url)
 		cc := raftpb.ConfChange{
 			Type:    raftpb.ConfChangeAddNode,
 			NodeID:  nodeId,
@@ -76,7 +58,7 @@ func (h *httpKVAPI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case http.MethodDelete:
 		nodeId, err := strconv.ParseUint(key[1:], 0, 64)
 		if err != nil {
-			log.Printf("Failed to convert ID for conf change (%v)\n", err)
+			log.Printf("httpKVAPI：Failed to convert ID for conf change (%v)\n", err)
 			http.Error(w, "Failed on DELETE", http.StatusBadRequest)
 			return
 		}
@@ -99,11 +81,10 @@ func (h *httpKVAPI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 // serveHttpKVAPI starts a key-value server with a GET/PUT API and listens.
-func serveHttpKVAPI(kv Store, port int, confChangeC chan<- raftpb.ConfChange, errorC <-chan error) {
+func serveHttpKVAPI(port string, confChangeC chan<- raftpb.ConfChange, errorC <-chan error) error {
 	srv := http.Server{
-		Addr: ":" + strconv.Itoa(port),
+		Addr: port,
 		Handler: &httpKVAPI{
-			store:       kv,
 			confChangeC: confChangeC,
 		},
 	}
@@ -115,6 +96,7 @@ func serveHttpKVAPI(kv Store, port int, confChangeC chan<- raftpb.ConfChange, er
 
 	// exit when raft goes down
 	if err, ok := <-errorC; ok {
-		log.Fatal(err)
+		return err
 	}
+	return nil
 }
