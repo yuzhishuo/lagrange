@@ -13,7 +13,7 @@ import (
 
 var (
 	file = flag.String("cfg", "/etc/cfg.toml", "The configuration file")
-	// file = flag.String("cfg", "../../cfg/node1.toml", "The configuration file")
+	// file = flag.String("cfg", "../../cfg/node3 copy.toml", "The configuration file")
 )
 
 var (

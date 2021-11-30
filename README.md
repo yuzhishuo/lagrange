@@ -1,14 +1,21 @@
+## 声明
+
+该仓库将于 2021/12/10 23:59:59 删除。
+
 ## 使用
+
+go.etcd.io/etcd 有一些bug 可以从 go.mod 中查看 需要自行解决
 
 `docker-compose up` 启动两个节点
 
-集群信息 为： http://node1:8081,http://node2:8082,
+集群信息 为： http://node1:8081,http://node2:8082
 
 将第三个节点信息交给集群：
 
 ```bash
  curl -L http://127.0.0.1:9901/3 -XPOST -d http://node3:8083
 ```
+
 
 将 docker-compose 中 node3 的配置信息更新到集群：
 在新的bash中执行docker-compose up，可以保证node3的启动和集群是在同一网络环境下

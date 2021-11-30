@@ -173,7 +173,6 @@ func (s *persistentStore) readCommits(commitC <-chan *commit, errorC <-chan erro
 
 func (s *persistentStore) recoverFromSnapshot(snapshot []byte) error {
 	log.Println("recoverFromSnapshot")
-	
 	var store map[string]string
 	if err := json.Unmarshal(snapshot, &store); err != nil {
 		return err

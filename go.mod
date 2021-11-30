@@ -2,7 +2,6 @@ module github.com/matrixorigin/talent-challenge/matrixbase/distributed
 
 go 1.17
 
-// replace go.etcd.io/etcd/server/v3 v3.5.1 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/server
 replace (
 	go.etcd.io/etcd/api/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/api
 	go.etcd.io/etcd/client/pkg/v3  => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/client/pkg

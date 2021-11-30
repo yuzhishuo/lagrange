@@ -6,6 +6,6 @@ memory = false
 dataPath = "/tmp"
 
 RaftId   = 2
-RaftCluster = "http://node1:8081,http://node2:8082,http://node3:8083"
+RaftCluster = "http://node1:8081,http://node2:8082"
 RaftJoin   = true
 RaftPort = "node2:9902"
