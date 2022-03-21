@@ -4,15 +4,15 @@ go 1.17
 
 replace (
 	go.etcd.io/etcd/api/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/api
-	go.etcd.io/etcd/client/pkg/v3  => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/client/pkg
-	go.etcd.io/etcd/client/v2  => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/client/v2
-	go.etcd.io/etcd/client/v3  => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/client/v3
-	go.etcd.io/etcd/etcdctl/v3   => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/etcdctl
-	go.etcd.io/etcd/etcdutl/v3   => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/etcdutl
-	go.etcd.io/etcd/pkg/v3   => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/pkg
-	go.etcd.io/etcd/raft/v3   => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/raft
-	go.etcd.io/etcd/server/v3   => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/server
-	go.etcd.io/etcd/tests/v3   => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/tests
+	go.etcd.io/etcd/client/pkg/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/client/pkg
+	go.etcd.io/etcd/client/v2 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/client/v2
+	go.etcd.io/etcd/client/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/client/v3
+	go.etcd.io/etcd/etcdctl/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/etcdctl
+	go.etcd.io/etcd/etcdutl/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/etcdutl
+	go.etcd.io/etcd/pkg/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/pkg
+	go.etcd.io/etcd/raft/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/raft
+	go.etcd.io/etcd/server/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/server
+	go.etcd.io/etcd/tests/v3 => /home/luluyuzhi/go/src/github.com/etcd-io/etcd/tests
 )
 
 require (
@@ -20,7 +20,7 @@ require (
 	github.com/cockroachdb/pebble v0.0.0-20211125005712-9791c0f4c052
 	github.com/gin-gonic/gin v1.6.3
 	github.com/stretchr/testify v1.7.0
-	github.com/valyala/fasthttp v1.19.0
+	github.com/valyala/fasthttp v1.34.0
 	go.etcd.io/etcd/client/pkg/v3 v3.5.1
 	go.etcd.io/etcd/raft/v3 v3.5.1
 	go.etcd.io/etcd/server/v3 v3.5.1
@@ -29,7 +29,7 @@ require (
 
 require (
 	github.com/DataDog/zstd v1.4.5 // indirect
-	github.com/andybalholm/brotli v1.0.0 // indirect
+	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
 	github.com/cockroachdb/errors v1.8.1 // indirect
@@ -47,7 +47,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/json-iterator/go v1.1.11 // indirect
-	github.com/klauspost/compress v1.11.7 // indirect
+	github.com/klauspost/compress v1.15.0 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
@@ -69,8 +69,8 @@ require (
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.7.0 // indirect
 	golang.org/x/exp v0.0.0-20200513190911-00229845015e // indirect
-	golang.org/x/net v0.0.0-20211123203042-d83791d6bcd9 // indirect
-	golang.org/x/sys v0.0.0-20211123173158-ef496fb156ab // indirect
+	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
+	golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba // indirect
 	google.golang.org/genproto v0.0.0-20211118181313-81c1377c94b1 // indirect
